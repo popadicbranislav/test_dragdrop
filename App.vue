@@ -26,7 +26,7 @@
         >
           <div class="item-header">
             <span class="item-title">{{ element.title }}</span>
-            <button :disabled="!edit" v-show="edit" class="handle">Move</button>
+            <span :disabled="!edit" v-show="edit" class="handle">Move</span>
           </div>
           <div class="item-content">
             <span class="bubble">
@@ -38,45 +38,70 @@
     </draggable>
 
     <footer class="footer">
-      <button @click="dialog = !dialog">Add element</button>
+      <div v-show="edit" class="actions">
+        <button class="actions-text" tabindex="-1">+ Add actions</button>
+        <div class="actions-list">
+          <button class="user-action" @click="onCloseDialog('user')">
+            <!-- @click="dialogUser = !dialogUser" -->
+            User
+          </button>
+          <button class="bot-action" @click="onCloseDialog('bot')">
+            <!-- @click="dialogBot = !dialogBot" -->
+            Bot
+          </button>
+        </div>
+      </div>
 
-      <VDialog
-        v-model="dialog"
+      <!-- <button @click="dialog = !dialog">+ Add element</button> -->
+
+      <!-- <VDialog
+        v-model="dialogUser"
         bg-transition="fade"
         class="my-dialog"
         @change="log"
       >
-        <!-- <template #toggle="{ bind, on }">
-          <button v-bind="bind" v-on="on">Add new element</button>
-        </template> -->
-
-        Here you can create add or create intents and responses to story.<br />
-        <!-- It traps the user's focus.<br /> -->
+        Add intent to the story<br />
         <button
           aria-label="close"
           class="my-dialog__close"
-          @click="dialog = false"
+          @click="onCloseDialog('user')"
         >
           &times;
         </button>
       </VDialog>
+      <VDialog
+        v-model="dialogBot"
+        bg-transition="fade"
+        class="my-dialog"
+        @change="log"
+      >
+        Add response to the story.<br />
+        <button
+          aria-label="close"
+          class="my-dialog__close"
+          @click="onCloseDialog('bot')"
+        >
+          &times;
+        </button>
+      </VDialog> -->
     </footer>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-import { VDialog } from "vuetensils/src/components";
+// import { VDialog } from "vuetensils/src/components";
 
 export default {
   name: "App",
   components: {
     draggable,
-    VDialog,
+    // VDialog,
   },
   data() {
     return {
-      dialog: false,
+      // dialogUser: false,
+      // dialogBot: false,
       drag: false,
       myArray: [
         {
@@ -124,6 +149,16 @@ export default {
     },
   },
   methods: {
+    onCloseDialog: function (type) {
+      type === "bot" ? (this.dialogBot = false) : (this.dialogUser = false);
+      const newIndex = new Date().getTime();
+      this.myArray.push({
+        id: newIndex,
+        title: type === "bot" ? "Response: <Name>" : "Intent: <Name>",
+        name: type === "bot" ? "Response example" : "Utterance example",
+        type: type,
+      });
+    },
     checkMove: function () {
       // checkMove: function (evt) {
       //   return evt.draggedContext.element.name !== "...";
@@ -185,11 +220,18 @@ button:hover {
   background: #ededed;
 }
 
-button.handle {
+.handle {
   cursor: move;
   border: none;
+  color: #ffffff;
+  background: #b3b3b3;
+  padding: 0 0.2rem;
+  border-radius: 0.4rem;
   /* background: none; */
   /* box-shadow: 0 0 0.2rem 0.2rem #0000002d; */
+}
+.handle:hover {
+  background: #797979;
 }
 
 .user {
@@ -282,5 +324,26 @@ button.handle {
   border: 0;
   padding: 5px;
   background: transparent;
+}
+
+.actions {
+  display: flex;
+}
+/* .actions:focus-within .actions-text::after, */
+.actions:hover .actions-text::after {
+  content: "  ->";
+}
+/* .actions:focus-within .actions-list, */
+.actions:hover .actions-list {
+  height: auto;
+  width: auto;
+  opacity: 1;
+}
+
+.actions-list {
+  height: 0;
+  width: 0;
+  opacity: 0;
+  display: inline-flex;
 }
 </style>
