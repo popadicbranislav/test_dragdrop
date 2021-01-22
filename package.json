@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "vuedraggable": "^2.24.3",
+    "vuetensils": "^0.7.8"
+  }
+}
