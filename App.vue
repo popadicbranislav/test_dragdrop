@@ -37,11 +37,8 @@
       </transition-group>
     </draggable>
 
-    <div class="footer">
-      
-    <button @click="dialog = !dialog">
-      Add element
-    </button>
+    <footer class="footer">
+      <button @click="dialog = !dialog">Add element</button>
 
       <VDialog
         v-model="dialog"
@@ -63,7 +60,7 @@
           &times;
         </button>
       </VDialog>
-    </div>
+    </footer>
   </div>
 </template>
 
@@ -154,15 +151,21 @@ body {
 
 .container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #ededed;
   margin: 1rem;
-  padding: 1rem;
+  /* padding: 1rem 0; */
   width: 40rem;
   overflow-y: auto;
 }
 
 .list-group {
   min-height: 20px;
+  overflow-y: auto;
+  box-shadow: inset 0 0 0.25rem 0 #dfdfdf;
+  border: 1px solid #dfdfdf;
+  flex: 1;
 }
 
 .element {
@@ -170,11 +173,23 @@ body {
   list-style: none;
 }
 
-.handle {
+button {
+  border: none;
+  outline: none;
+  background: none;
+  border-radius: 0.2rem;
+  padding: 0.4rem 0.8rem;
+}
+
+button:hover {
+  background: #ededed;
+}
+
+button.handle {
   cursor: move;
   border: none;
-  background: none;
-  box-shadow: 0 0 .2rem .2rem #0000002d;
+  /* background: none; */
+  /* box-shadow: 0 0 0.2rem 0.2rem #0000002d; */
 }
 
 .user {
@@ -186,7 +201,8 @@ body {
 
 .ghost {
   opacity: 0.5;
-  background: #676767;
+  /* background: #b3b3b3; */
+  /* margin: .4rem; */
 }
 
 .flip-list-move {
@@ -211,8 +227,12 @@ body {
 }
 
 .item-content {
-  /* display: flex;   */
   padding: 1rem;
+}
+
+.toolbar,
+.footer {
+  padding: 0.2rem 0.8rem;
 }
 
 .fade-enter-active,
